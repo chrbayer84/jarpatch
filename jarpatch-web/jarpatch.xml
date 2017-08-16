@@ -1,0 +1,28 @@
+1271a1272,1298
+>       <subsection name="JarPatch">
+>         <p>JarPatch is a task that generates a zip file resulting of the 
+> 	diff between the content of 2 jar files. <br/>
+> 	The resulting diff file can be use as a patch for a previous installation 
+> 	(just ensure that the generated patch.zip file is located on the CLASSPATH 
+> 	before the patched oldJar jar file)</p>
+> 
+>         <table class="externals">
+>           <tr>
+>             <th>Compatibility:</th>
+>             <td>Ant 1.5 and later</td>
+>           </tr>
+>           <tr>
+>             <th>URL:</th>
+>             <td><a href="http://perso.club-internet.fr/sjobic/ant/">http://perso.club-internet.fr/sjobic/ant/</a></td>
+>           </tr>
+>           <tr>
+>             <th>Contact:</th>
+>             <td><a href="mailto:norbert.barbosa@laposte.net">Norbert Barbosa</a></td>
+>           </tr>
+>           <tr>
+>             <th>License:</th>
+>             <td>LGPL License</td>
+>           </tr>
+>         </table>
+>       </subsection>
+> 

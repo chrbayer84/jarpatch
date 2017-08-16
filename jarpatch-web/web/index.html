@@ -1,0 +1,124 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+    <title>JarPatch ANT Task 0.6</title>
+    <link href="w3c-like.css" rel="stylesheet" type="text/css">
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+	<META NAME="CLASSIFICATION" CONTENT="ant task to build patch from jar files">
+	<META NAME="KEYWORDS" CONTENT="ant task jar patch">
+</head>
+<body>
+
+<h1>JarPatch ANT Task 0.6</h1>
+<h3>Description</h3>
+
+<p><b>JarPatch</b> is an ANT task (and standalone utility) that allow to build a diff zip file which contains the difference between 2 jar or war files
+(named <i>newJar</i> and <i>oldjar</i>). 
+The diff file consist of:
+<ul>
+<li>all ressources defined on the <i>newjar</i> and not defined on the <i>oldJar</i>,
+<li>all ressources defined on the <i>oldJar</i> that have been modified on the <i>newJar</i>. 
+Modified ressources are determined by MD5 hash computing.
+</ul>
+<br>
+This diff file can be use as a <b>patch</b> for a previous installation (just ensure that the 
+generated patch.zip file is located on the CLASSPATH before the patched <i>oldJar</i> jar file).
+</p>
+<p>The task has been tested using ANT 1.5.4 and ANT 1.6.2.
+</p>
+
+<h3>Download</h3>
+Download jarpatch distribution: <a href="jarpatch-0.6.zip">jarpatch-0.6.zip</a> <br>
+it contains the compiled jarpatch.jar and all source/test stuff.
+
+<h3>Installation</h3>
+<p>The easiest way is to include <b>jarpatch-0.6.jar</b> on the <i>$ANT_HOME/lib</i> directory. 
+</p>
+<p>To use the task in a build file, you will need the following <code>taskdef</code> declaration:</p>
+
+<pre>
+  &lt;taskdef name=&quot;jarpatch&quot; classname=&quot;org.jarpatch.JarPatchTask&quot;/&gt;
+</pre>
+
+<p>Alternatively, you can specify the jarpatch location with the <code>classpath</code> attribute:</p>
+<pre>
+  &lt;taskdef name=&quot;jarpatch&quot; classname=&quot;org.jarpatch.JarPatchTask&quot; 
+        classpath=&quot;c:/somewhere/jarpatch.jar&quot;/&gt;
+</pre>
+
+<h3>Parameters</h3>
+<table border="1" cellpadding="2" cellspacing="0" summary="parameters">
+  <tr class="header">
+    <td><b>Attribute</b></td>
+    <td><b>Description</b></td>
+    <td><b>Required</b></td>
+  </tr>
+  <tr>
+    <td>newJar</td>
+    <td>The <i>new jar</i> file, that define new or modified ressource</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>oldJar</td>
+    <td>The <i>old jar</i> file, that is the reference to know which ressource are new or modified</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>resultPatch</td>
+    <td>The resulting zip file, containing the new and modified ressources</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>excludes</td>
+    <td>a comma separate list of regex pattern (JDK1.4 syntax)</td>
+    <td>No</td>
+  </tr>
+    <tr>
+      <td>logDeleteFile</td>
+      <td>(Boolean) if true then add a file <code>jarpatch_deleted.log</code> on the resultPatch,
+      that contains the list of files that are found in oldJar but not in newJar (one line by file)</td>
+      <td>No</td>
+    </tr>
+
+</table>
+
+
+
+<h3>Examples</h3>
+<p><b>Run jarpatch to generate a patch from a 2 jar, excluding images ressources</b></p>
+<pre>
+   &lt;jarpatch newJar=&quot;${build}.lib/${app.jar}&quot; oldjar=&quot;${dist}/lib/${app.jar}&quot;
+         resultPatch=&quot;${dist}/patch/patch-${build.number}.zip&quot; excludes=&quot;.*\.gif, .*\.jpg&quot;/&gt;
+</pre>
+<p>
+<p><b>Same, but called as a standalone utility</b></p>
+<pre>
+   java -jar jarpatch.jar -new myNew.jar -old myOld.jar -out myPatch.zip -excludes .*\.gif,.*\.jpg
+</pre>
+
+<h3>License</h3>
+<p>
+jarPatch is licensed with the <a href="http://www.gnu.org/copyleft/lesser.html">LGPL license</a>, 
+meaning that is free and open source, and can be used for commercial projects.
+</p>
+
+<h3>API Documentation</h3>
+<p>
+Javadoc API documentation is available <a href="api/index.html">here</a>.
+</p>
+
+<h3>History</h3>
+<ul>
+    <li><b>0.3</b> (2004): initial public release</li>
+    <li><b>0.4</b> (2007-05-14): manage jar inside another zip (like EAR or WAR) : contribution from <b>Shawn Ellis</b></li>
+    <li><b>0.5</b> (2007-08-18): add an optional log describing removed files : contribution from <b>Kristopher Hall</b></li>
+    <li><b>0.6</b> (2008-03-03): fix command line parsing bug : contribution from <b>Alexandre Vasseur</b></li>
+</ul>
+
+<hr />
+Feedback to <a href="mail:norbert.barbosa@laposte.net">Norbert Barbosa</a>
+
+
+
+</body>
+</html>
