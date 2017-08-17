@@ -27,6 +27,7 @@ import java.util.*;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 /**
  * maintain a view of a Jar content.
@@ -39,7 +40,8 @@ public class JarContent {
     private final JarFile fjar;
     private Map fcontents;
     private static MessageDigest fmd5Digest;
-    private Pattern[] fexcludes;
+    private Pattern[] fexcludes = new Pattern[] { Pattern.compile( "META-INF.*" )}; // per default exclude all META-INF resources;
+    private Pattern[] fmetaInfIncludes;
     
     private static final JarEntry[] EMPTY_JARENTRIES = {};
 
@@ -50,7 +52,12 @@ public class JarContent {
     
     /** set the exclude pattern */
     public void setExcludePattern(Pattern[] excludes) {
-        fexcludes = excludes;
+        fexcludes = Stream.of(fexcludes, excludes).flatMap(Stream::of).toArray(Pattern[]::new);
+    }
+
+    /** set the META-INF include pattern */
+    public void setMetaInfIncludePattern(Pattern[] metaInfIncludes) {
+        fmetaInfIncludes = metaInfIncludes;
     }
 
     /** initialize the JarContent from the jar */
@@ -62,7 +69,7 @@ public class JarContent {
                 boolean skip=false;
                 for(int i=0;i<fexcludes.length;i++)
                     if(fexcludes[i].matcher(entry.getName()).matches()){
-                        skip = true;
+                        skip = fmetaInfIncludes == null ? true : Stream.of( fmetaInfIncludes ).noneMatch( metaInfInclude -> metaInfInclude.matcher( entry.getName() ).matches() );
                         break;
                     }
                 if(skip)
@@ -159,8 +166,6 @@ public class JarContent {
             boolean foundDifference = false;
             Map.Entry e = (Map.Entry)i.next();
             String entry = (String)e.getKey();
-            if(entry.startsWith("META-INF") /*|| entry.startsWith("WEB-INF")*/) // skip manifest content
-                continue;
 
             if (entry.endsWith(".jar") || entry.endsWith(".war") || entry.endsWith(".zip")) {
                 File newJarFile = extractJarEntry(entry);
@@ -171,6 +176,10 @@ public class JarContent {
                     if (fexcludes != null) {
                         nj.setExcludePattern(fexcludes);
                         oj.setExcludePattern(fexcludes);
+                    }
+                    if (fmetaInfIncludes != null) {
+                        nj.setMetaInfIncludePattern(fmetaInfIncludes);
+                        oj.setMetaInfIncludePattern(fmetaInfIncludes);
                     }
                     nj.initializeContent();
                     oj.initializeContent();
@@ -220,8 +229,6 @@ public class JarContent {
             boolean foundDifference = false;
             Map.Entry e = (Map.Entry)i.next();
             String entry = (String)e.getKey();
-            if (entry.startsWith("META-INF") /*|| entry.startsWith("WEB-INF")*/) // skip manifest content
-                continue;
 
             if (entry.endsWith(".jar") || entry.endsWith(".war") || entry.endsWith(".zip")) {
 		    // entry is a JAR, WAR, or ZIP

@@ -47,19 +47,24 @@ public class JarPatch {
      * 
      * @param newJar - the new jar, use to compute difference
      * @param oldJar - the old jar, use to compute difference
-     * @param excludes - an optional (can be null) regexp for excluding ressource
+     * @param excludes - an optional (can be null) regexp for excluding ressource(s)
+     * @param metaInfIncludes - an optional (can be null) regexp for including META-INF ressource(s)
      * @param zipPatchFile - the result zip file, that contains the difference between newJar and oldJar
      * @param logDeletedFiles - if true then add a file <code>jarpatch_deleted.log</code> on the zipPatchFile,
      * that contains the list of files that are found in oldJar but not in newJar (one line by file) 
      * @return true if a patch can be build, false if no difference have been found
      * @throws IOException - if IO error occur
      */      
-    public boolean buildPatch(File newJar, File oldJar, Pattern[] excludes, File zipPatchFile, boolean logDeletedFiles) throws IOException {
+    public boolean buildPatch(File newJar, File oldJar, Pattern[] excludes, Pattern[] metaInfIncludes, File zipPatchFile, boolean logDeletedFiles) throws IOException {
         JarContent fnew = new JarContent(newJar);
         JarContent fold = new JarContent(oldJar);
         if(excludes != null){
             fnew.setExcludePattern(excludes);
             fold.setExcludePattern(excludes);
+        }
+        if(metaInfIncludes != null){
+            fnew.setMetaInfIncludePattern(metaInfIncludes);
+            fold.setMetaInfIncludePattern(metaInfIncludes);
         }
         fnew.initializeContent();
         fold.initializeContent();

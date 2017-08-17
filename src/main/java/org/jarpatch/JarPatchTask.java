@@ -42,10 +42,15 @@ public class JarPatchTask extends Task {
     private File fnewJar;
     private File fresultPatch;
     private String fexcludes;
+    private String fmetaInfIncludes;
     private boolean logDeleteFile = false;
 
     public void setExcludes(String excludes) {
         fexcludes = excludes;
+    }
+
+    public void setMetaInfIncludes(String metaInfIncludes) {
+        fmetaInfIncludes = metaInfIncludes;
     }
 
     public void setNewJar(File newJar) {
@@ -81,11 +86,20 @@ public class JarPatchTask extends Task {
                 throw new BuildException("excludes attribute invalid: "+e.getMessage());
             }
         }
+        Pattern[] metaInfIncludes = null;
+        if(fmetaInfIncludes != null){
+            try{
+                metaInfIncludes = JarPatch.tokenizePatterns(fmetaInfIncludes);
+                if(metaInfIncludes.length == 0) metaInfIncludes = null;
+            }catch(PatternSyntaxException e){
+                throw new BuildException("metaInfIncludes attribute invalid: "+e.getMessage());
+            }
+        }
         log("Generating "+fresultPatch+" patch from difference between new "+fnewJar+" and old "+foldJar+" with logDeleteFile="+logDeleteFile, Project.MSG_VERBOSE);
         
         JarPatch jp = new JarPatch();
         try {
-            if(!jp.buildPatch(fnewJar, foldJar, excludes, fresultPatch, logDeleteFile))
+            if(!jp.buildPatch(fnewJar, foldJar, excludes, metaInfIncludes, fresultPatch, logDeleteFile))
                 log("files  "+fnewJar+" and "+foldJar+" contains no suitable difference: no patch builded");
         } catch(IOException e) {
             e.printStackTrace();
