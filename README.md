@@ -11,5 +11,6 @@ Distribution content:
    
 Each distribution contains it's own ant build script, demo and documentation  
 Minimal requirement to re-build the package, and use the package are:
-    - JDK 1.4
-    - jakarta ant 1.5 
+    - JDK 1.8
+    - jakarta ant 
+Documentation: https://chrbayer84.github.io/jarpatch/
