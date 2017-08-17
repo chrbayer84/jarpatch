@@ -57,12 +57,13 @@ public class Main {
     
     /** helper method to print the main usage, and exit */
     private static void printUsageAndExit(){
-        System.out.println("usage: java org.jarpatch.Main -old oldJar -new newJar -out resultZip [-except RegexpPattern]");
+        System.out.println("usage: java org.jarpatch.Main -old oldJar -new newJar -out resultZip [-excludes RegexpPattern] [-metaInfIncludes RegexpPattern] [-logDeleteFile]");
         System.out.println("with");
         System.out.println("-old oldJar: the old jar/war file name");
         System.out.println("-new newJar: the new jar/war file name");
         System.out.println("-out resultZip: the result patch zp file, witch contains new or modified file from the newJar to oldJar");
-        System.out.println("-excludes regexpPattern,regexpPattern,...: an optional comma separate list of regexp (JDK1.4 regexp), that specifiy entries to be ignored");
+        System.out.println("-excludes regexpPattern,regexpPattern,...: an optional comma separate list of regexp (JDK1.4 regexp), that specify entries to be ignored");
+        System.out.println("-metaInfIncludes regexpPattern,regexpPattern,...: an optional comma separate list of regexp (JDK1.4 regexp), that specify META-INF entries to be included");
         System.out.println("-logDeleteFile: a flag indicating if need to generate a log file named <code>jarpatch_deleted.log</code>, which contains the list of files that are found in oldJar but not in newJar (one line by file)");
         System.exit(1);
     }
@@ -73,6 +74,7 @@ public class Main {
         File newJar = null;
         File patch = null;
         Pattern[] exclude = null;
+        Pattern[] metaInfIncludes = null;
         boolean logDeleteFile = false;
         for(int i = 0; i < args.length; i++) {
             if("-h".equalsIgnoreCase(args[i]) || "-help".equalsIgnoreCase(args[i]))
@@ -85,13 +87,15 @@ public class Main {
                 patch = extractFile(args[++i], "-out", false);
             else if("-excludes".equalsIgnoreCase(args[i]))
                 exclude = JarPatch.tokenizePatterns(args[++i]);
+            else if("-metaInfIncludes".equalsIgnoreCase(args[i]))
+                metaInfIncludes = JarPatch.tokenizePatterns(args[++i]);
             else if("-logDeleteFile".equalsIgnoreCase(args[i]))
                 logDeleteFile = true;
         }
         if(oldJar == null || newJar == null || patch == null)
             printUsageAndExit();
         JarPatch jp = new JarPatch();
-        if(!jp.buildPatch(newJar, oldJar, exclude, patch, logDeleteFile))
+        if(!jp.buildPatch(newJar, oldJar, exclude, metaInfIncludes, patch, logDeleteFile))
             System.out.println("jar files contains no difference: no patch build");
     }
 
