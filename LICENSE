@@ -1,4 +1,7 @@
-Dual-licensed with LGPL 2.0 and relicensed 2017 with original author's consent to a BSD license.
+Binary artifacts up until version 0.6 are licensed with LGPL 2.0.
+
+Relicensed all source code and binaries version 0.7-SNAPSHOT and up to
+BSD license 2017 with original author's consent.
 
 /// Original license
 Copyright (C) 2004 Norbert Barbosa (norbert.barbosa@laposte.net)
@@ -20,7 +23,7 @@ You should have received a copy of the GNU Lesser General Public
 License along with this library; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
-/// New license 2017
+/// New license 2017 for source code and binaries version 0.7-SNAPSHOT and up
 Copyright (c) 2004 Norbert Barbosa, 2017 Christian Bayer
 All rights reserved.
 
