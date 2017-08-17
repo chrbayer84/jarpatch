@@ -6,11 +6,16 @@
 	<version>0.8-SNAPSHOT</version>
 	<name>jarpatch</name>
 
-    <parent>
-        <groupId>org.sonatype.oss</groupId>
-        <artifactId>oss-parent</artifactId>
-        <version>7</version>
-    </parent>
+    <distributionManagement>
+      <snapshotRepository>
+        <id>ossrh</id>
+        <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+      </snapshotRepository>
+      <repository>
+        <id>ossrh</id>
+        <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+      </repository>
+    </distributionManagement>
 
 	<scm>
 		<connection>scm:git:git@github.com:chrbayer84/jarpatch.git</connection>
@@ -45,6 +50,17 @@
 	</dependencies>
 	<build>
 		<plugins>
+            <!--<plugin>-->
+              <!--<groupId>org.sonatype.plugins</groupId>-->
+              <!--<artifactId>nexus-staging-maven-plugin</artifactId>-->
+              <!--<version>1.6.7</version>-->
+              <!--<extensions>true</extensions>-->
+              <!--<configuration>-->
+                <!--<serverId>ossrh</serverId>-->
+                <!--<nexusUrl>https://oss.sonatype.org/</nexusUrl>-->
+                <!--<autoReleaseAfterClose>true</autoReleaseAfterClose>-->
+              <!--</configuration>-->
+            <!--</plugin>-->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
