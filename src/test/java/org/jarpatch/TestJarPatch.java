@@ -18,7 +18,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA 
  */
-package test.jarpatch;
+package org.jarpatch;
 
 import java.io.File;
 import java.io.IOException;
@@ -38,53 +38,56 @@ import org.jarpatch.JarPatch;
  * @version $Revision$
  */
 public class TestJarPatch extends TestCase {
-    private static final String BASE = "./src/test/jarpatch/";
-    
+
     public void testSimpleNoDiff() throws IOException {
         JarPatch jp = new JarPatch();
 
-        File newJar = new File(BASE+"test-new.zip");
-        File oldJar = new File(BASE+"test-old.zip");
-        File result = new File(BASE+"out-nodiff.zip");
+        File newJar = new File(getClass().getResource("/test-new.zip").getFile());
+        File oldJar = new File(getClass().getResource("/test-old.zip").getFile());
+        File result = new File(getClass().getResource("/").getFile(), "out-nodiff.zip");
         Pattern[] excludes = JarPatch.tokenizePatterns(".*/test1\\.txt, .*/test?\\.txt");
         assertFalse("Difference found", jp.buildPatch(newJar, oldJar, excludes, result, false));
         assertFalse(result.exists());
     }
+
     public void testSimpleDiff() throws IOException {
         JarPatch jp = new JarPatch();
 
-        File newJar = new File(BASE+"test-new.zip");
-        File oldJar = new File(BASE+"test-old.zip");
-        File result = new File(BASE+"out-diff.zip");
+        File newJar = new File(getClass().getResource("/test-new.zip").getFile());
+        File oldJar = new File(getClass().getResource("/test-old.zip").getFile());
+        File result = new File(getClass().getResource("/").getFile(), "testSimpleDiff-diff.zip");
         assertTrue("No difference found", jp.buildPatch(newJar, oldJar, null, result, false));
         assertTrue(result.exists());
     }
+
     public void testSimpleWar() throws IOException {
         JarPatch jp = new JarPatch();
 
-        File newJar = new File(BASE+"test-new.war");
-        File oldJar = new File(BASE+"test-old.war");
-        File result = new File(BASE+"out-diff.jar");
+        File newJar = new File(getClass().getResource("/test-new.war").getFile());
+        File oldJar = new File(getClass().getResource("/test-old.war").getFile());
+        File result = new File(getClass().getResource("/").getFile(), "testSimpleWar-diff.zip");
         assertTrue("No difference found", jp.buildPatch(newJar, oldJar, null, result, false));
         assertTrue(result.exists());
     }
-    public void testSimpleDiffNoLog() throws IOException {
-         JarPatch jp = new JarPatch();
 
-         File newJar = new File(BASE+"test-new.zip");
-         File oldJar = new File(BASE+"test-old.zip");
-         File result = new File(BASE+"out-diff.zip");
-         assertTrue("No difference found", jp.buildPatch(newJar, oldJar, null, result, true));
-         assertTrue(result.exists());
-         ZipFile zresult =  new ZipFile(result);
-         assertNull("log file generated", zresult.getEntry(JarPatch.DELLOG_NAME));
+    public void testSimpleDiffNoLog() throws IOException {
+        JarPatch jp = new JarPatch();
+
+        File newJar = new File(getClass().getResource("/test-new.zip").getFile());
+        File oldJar = new File(getClass().getResource("/test-old.zip").getFile());
+        File result = new File(getClass().getResource("/").getFile(), "testSimpleDiffNoLog-diff.zip");
+        assertTrue("No difference found", jp.buildPatch(newJar, oldJar, null, result, true));
+        assertTrue(result.exists());
+        ZipFile zresult = new ZipFile(result);
+        assertNull("log file generated", zresult.getEntry(JarPatch.DELLOG_NAME));
     }
+
     public void testSimpleDiffLog() throws IOException {
         JarPatch jp = new JarPatch();
 
-        File newJar = new File(BASE + "test-new2.zip");
-        File oldJar = new File(BASE + "test-old.zip");
-        File result = new File(BASE + "out-diff.zip");
+        File newJar = new File(getClass().getResource("/test-new2.zip").getFile());
+        File oldJar = new File(getClass().getResource("/test-old.zip").getFile());
+        File result = new File(getClass().getResource("/").getFile(), "testSimpleDiffLog-diff.zip");
         assertTrue("No difference found", jp.buildPatch(newJar, oldJar, null, result, true));
         assertTrue(result.exists());
         ZipFile zresult = new ZipFile(result);
