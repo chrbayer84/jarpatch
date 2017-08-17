@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/chrbayer84/jarpatch.svg)](https://travis-ci.org/chrbayer84/jarpatch)
+[![Maven Central](https://img.shields.io/maven-central/v/com.github.chrbayer84/jarpatch.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.chrbayer84/jarpatch)
 jarpatch: Ant task to build a diff of 2 jar files, by Barbosa Norbert
 
 Distribution content:
