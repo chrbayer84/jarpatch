@@ -58,9 +58,12 @@ public class TestJarPatch {
     public void testSimpleNoDiff() throws IOException {
         JarPatch jp = new JarPatch();
 
+        File result = new File(getClass().getResource("/").getFile(), "out-nodiff.zip");
+        if (result.exists())
+            result.delete();
+
         File newJar = new File(getClass().getResource("/test-new.zip").getFile());
         File oldJar = new File(getClass().getResource("/test-old.zip").getFile());
-        File result = new File(getClass().getResource("/").getFile(), "out-nodiff.zip");
         Pattern[] excludes = JarPatch.tokenizePatterns(".*/test1\\.txt, .*/test?\\.txt");
         assertFalse("Difference found", jp.buildPatch(newJar, oldJar, excludes, null, result, false));
         assertFalse(result.exists());
@@ -70,9 +73,13 @@ public class TestJarPatch {
     public void testSimpleDiff() throws IOException {
         JarPatch jp = new JarPatch();
 
+        File result = new File(getClass().getResource("/").getFile(), "testSimpleDiff-diff.zip");
+        if (result.exists())
+            result.delete();
+
         File newJar = new File(getClass().getResource("/test-new.zip").getFile());
         File oldJar = new File(getClass().getResource("/test-old.zip").getFile());
-        File result = new File(getClass().getResource("/").getFile(), "testSimpleDiff-diff.zip");
+
         assertTrue("No difference found", jp.buildPatch(newJar, oldJar, null, null, result, false));
         assertTrue(result.exists());
     }
@@ -81,9 +88,12 @@ public class TestJarPatch {
     public void testSimpleWar() throws IOException {
         JarPatch jp = new JarPatch();
 
+        File result = new File(getClass().getResource("/").getFile(), "testSimpleWar-diff.zip");
+        if (result.exists())
+            result.delete();
+
         File newJar = new File(getClass().getResource("/test-new.war").getFile());
         File oldJar = new File(getClass().getResource("/test-old.war").getFile());
-        File result = new File(getClass().getResource("/").getFile(), "testSimpleWar-diff.zip");
         assertTrue("No difference found", jp.buildPatch(newJar, oldJar, null, null, result, false));
         assertTrue(result.exists());
     }
@@ -92,9 +102,12 @@ public class TestJarPatch {
     public void testSimpleDiffNoLog() throws IOException {
         JarPatch jp = new JarPatch();
 
+        File result = new File(getClass().getResource("/").getFile(), "testSimpleDiffNoLog-diff.zip");
+        if (result.exists())
+            result.delete();
+
         File newJar = new File(getClass().getResource("/test-new.zip").getFile());
         File oldJar = new File(getClass().getResource("/test-old.zip").getFile());
-        File result = new File(getClass().getResource("/").getFile(), "testSimpleDiffNoLog-diff.zip");
         assertTrue("No difference found", jp.buildPatch(newJar, oldJar, null, null, result, true));
         assertTrue(result.exists());
         ZipFile zresult = new ZipFile(result);
@@ -105,9 +118,12 @@ public class TestJarPatch {
     public void testSimpleDiffLog() throws IOException {
         JarPatch jp = new JarPatch();
 
+        File result = new File(getClass().getResource("/").getFile(), "testSimpleDiffLog-diff.zip");
+        if (result.exists())
+            result.delete();
+
         File newJar = new File(getClass().getResource("/test-new2.zip").getFile());
         File oldJar = new File(getClass().getResource("/test-old.zip").getFile());
-        File result = new File(getClass().getResource("/").getFile(), "testSimpleDiffLog-diff.zip");
         assertTrue("No difference found", jp.buildPatch(newJar, oldJar, null, null, result, true));
         assertTrue(result.exists());
         ZipFile zresult = new ZipFile(result);
@@ -122,9 +138,12 @@ public class TestJarPatch {
     public void testDefaultMetaInfExclude() throws IOException {
         JarPatch jp = new JarPatch();
 
+        File result = new File(getClass().getResource("/").getFile(), "testDefaultMetaInfExclude-diff.zip");
+        if (result.exists())
+            result.delete();
+
         File newJar = new File(getClass().getResource("/test-meta_inf-new.jar").getFile());
         File oldJar = new File(getClass().getResource("/test-meta_inf-old.jar").getFile());
-        File result = new File(getClass().getResource("/").getFile(), "testDefaultMetaInfExclude-diff.zip");
         assertFalse("Difference found", jp.buildPatch(newJar, oldJar, null, null, result, false));
         assertFalse(result.exists());
     }
@@ -133,9 +152,12 @@ public class TestJarPatch {
     public void testMetaInfInclude() throws IOException {
         JarPatch jp = new JarPatch();
 
+        File result = new File(getClass().getResource("/").getFile(), "testDefaultMetaInfExclude-diff.zip");
+        if (result.exists())
+            result.delete();
+
         File newJar = new File(getClass().getResource("/test-meta_inf-new.jar").getFile());
         File oldJar = new File(getClass().getResource("/test-meta_inf-old.jar").getFile());
-        File result = new File(getClass().getResource("/").getFile(), "testDefaultMetaInfExclude-diff.zip");
         Pattern[] metaInfIncludes = JarPatch.tokenizePatterns(".*Log4j2Plugins\\.dat");
         assertTrue("No difference found", jp.buildPatch(newJar, oldJar, null, metaInfIncludes, result, false));
         assertTrue(result.exists());
