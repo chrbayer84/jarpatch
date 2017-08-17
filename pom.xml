@@ -3,7 +3,7 @@
 	<groupId>com.github.chrbayer84</groupId>
 	<artifactId>jarpatch</artifactId>
 	<packaging>jar</packaging>
-	<version>0.7</version>
+	<version>0.8-SNAPSHOT</version>
 	<name>jarpatch</name>
 
     <parent>
